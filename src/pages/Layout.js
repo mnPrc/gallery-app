@@ -6,6 +6,9 @@ import HomePage from "./HomePage";
 import Login from "./Login";
 import Register from "./Register";
 import GuestRoute from "../components/routing/GuestRoute";
+import PrivateRoute from "../components/routing/PrivateRoute";
+import CreateGallery from "./gallery/CreateGallery";
+import SingleGallery from "./gallery/SingleGallery";
 
 function Layout() {
     return(
@@ -24,6 +27,14 @@ function Layout() {
                     <Route exact path="/galleries">
 						<HomePage />
 					</Route>
+                    
+                    <PrivateRoute path="/create">
+                        <CreateGallery/>
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/galleries/:id">
+                        <SingleGallery/>
+                    </PrivateRoute>
 
                     <Route exact path="/">
                         <Redirect to="/galleries"/>

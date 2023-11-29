@@ -32,6 +32,13 @@ function Navbar() {
 				>
 					Galleries
 				</Link>
+                
+                {isUserAuthenticated && (
+                    <Link to="/create">
+                        Create Gallery
+                    </Link>
+                )}
+
 
                 {!isUserAuthenticated && (
 					<Link className="navbar-item" to="/register">

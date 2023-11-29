@@ -1,4 +1,4 @@
-import { Link } from 'react';
+import { BrowserRouter as Link } from 'react-router-dom';
 import useFormattedDate from "../../hooks/useFormattedDate";
 
 function GalleryRow({ gallery } ) {
@@ -19,7 +19,11 @@ function GalleryRow({ gallery } ) {
 					)}
 						{gallery && (
 					<div>
+						<Link
+							to={`/galleries/${gallery.id}`}
+						>
 						{gallery.name}
+						</Link>
 					<br />
 					{gallery.user && (
 						<div>

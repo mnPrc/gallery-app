@@ -21,7 +21,7 @@ export const userSlice = createSlice({
     reducers: {
         setToken(state, action){
             state.token = action.payload;
-        },
+    },
         removeUser(state){
             state.user = {};
         },
