@@ -55,15 +55,14 @@ const galleriesSlice = createSlice({
             state.createGalleryErrors = payload;
         },
 
-        setGalleryWithNewComment(state, action) {
-            state.gallery = {
-                ...state.gallery,
-                comments: [...state.gallery.comments, action.payload],
-            };
+        addCommentToGallery: (state, action) => {
+            state.gallery.comments.push(action.payload);
         },
 
-        setGalleryWithoutComment(state){
-            state.gallery = state.gallery;
+        deleteCommentFromGallery: (state, action) => {
+            state.gallery.comments = state.gallery.comments.filter(
+                (comment) => comment.id !== action.payload
+            );
         },
 
         setCreateCommentError(state, {payload}) {
@@ -88,8 +87,8 @@ export const {
     setCreateGalleryErrors,
     addComment,
     deleteComment,
-    setGalleryWithNewComment,
-    setGalleryWithoutComment,
+    addCommentToGallery,
+    deleteCommentFromGallery,
     setCreateCommentError
 
 } = galleriesSlice.actions;

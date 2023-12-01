@@ -12,8 +12,8 @@ import {
     deleteGallery,
     setGalleriesWithNewGallery,
     setCreateGalleryErrors,
-    setGalleryWithNewComment,
-    setGalleryWithoutComment,
+    addCommentToGallery,
+    deleteCommentFromGallery,
     addComment,
     deleteComment,
     setCreateCommentError
@@ -87,7 +87,7 @@ function* addCommmentHandler(action) {
     try {
         const newComment = yield call(GalleryService.addComment, action.payload);
 
-        yield put(setGalleryWithNewComment(newComment));
+        yield put(addCommentToGallery(newComment));
     } catch(error){
         yield put(setCreateCommentError(error.response.data.message));
     }
@@ -97,7 +97,7 @@ function* deleteCommentHandler(action) {
     try{
         const comment = yield call(GalleryService.deleteComment, action.payload);
 
-        yield put(setGalleryWithoutComment(comment));
+        yield put(deleteCommentFromGallery(comment));
     } catch(error) {
         alert(error.message);
     }

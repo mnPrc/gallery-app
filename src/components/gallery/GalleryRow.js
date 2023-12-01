@@ -1,4 +1,4 @@
-import { BrowserRouter as Link } from 'react-router-dom';
+import { BrowserRouter as Router,Link } from 'react-router-dom';
 import useFormattedDate from "../../hooks/useFormattedDate";
 
 function GalleryRow({ gallery } ) {

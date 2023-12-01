@@ -7,6 +7,7 @@ import useFormattedDate from '../../hooks/useFormattedDate';
 import { deleteGallery, getGallery, } from '../../store/gallery/slice';
 import DisplayImages from '../../components/gallery/DisplayImages';
 import DisplayComments from '../../components/gallery/DisplayComments';
+import { getActiveUser } from '../../store/auth/slice';
 
 function SingleGallery() {
     const history = useHistory();
@@ -20,6 +21,10 @@ function SingleGallery() {
         gallery ? gallery.created_at : ' ',
         'dd.MM.yyyy'
     );
+
+    useEffect(() => {
+      dispatch(getActiveUser(id))
+    },[id, dispatch]);
     
     useEffect(() => {
         dispatch(getGallery(id))
@@ -36,6 +41,7 @@ function SingleGallery() {
       <h3>Author: {gallery?.user?.first_name} {gallery?.user?.last_name}</h3>
       <p>Description: <br/> {gallery.description}</p>
       <p>Created at: {formattedDate}</p>
+
       {isUserAuthenticated && activeUser.id === gallery.user_id && (
           <button onClick={() => handleDeleteGallery(id)}>Delete Gallery</button>
       )}

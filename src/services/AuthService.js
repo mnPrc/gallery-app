@@ -25,7 +25,7 @@ class AuthService extends HttpService {
     };
 
     getMyProfile = async () => {
-        const { data } = await this.client.get('my-galleries')
+        const { data } = await this.client.get('my-profile');
 
         return data;
     }
