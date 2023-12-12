@@ -35,6 +35,10 @@ function SingleGallery() {
         history.push('/galleries');
     }
 
+    const handleUpdateGallery = (id) => {
+      history.push(`/update-gallery/${id}`);
+    };
+
   return (
     <div>
       <h1>{gallery.name}</h1>
@@ -43,7 +47,10 @@ function SingleGallery() {
       <p>Created at: {formattedDate}</p>
 
       {isUserAuthenticated && activeUser.id === gallery.user_id && (
+          <>
           <button onClick={() => handleDeleteGallery(id)}>Delete Gallery</button>
+          <button onClick={() => handleUpdateGallery(id)}>Update Gallery</button>
+          </>
       )}
       <div>
         <DisplayImages key={gallery.id} images={gallery.images} />

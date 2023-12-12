@@ -1,9 +1,16 @@
 import HttpService from "./HttpService";
 
 class GalleryService extends HttpService{
-    getAll = async (page = 0) => {
+    getAll = async (page = 0, user_id = '', term = '') => {
         let endpoint = `/galleries/?page=${page}`;
 
+        if(user_id){
+            endpoint +=`&user_id=${user_id}`;
+        }
+
+        if(term){
+            endpoint += `&term=${term}`;
+        }
         const { data } = await this.client.get(endpoint);
         
         return data;
@@ -46,4 +53,5 @@ class GalleryService extends HttpService{
     }
 }
 
-export default new GalleryService();
+const galleryService = new GalleryService();
+export default galleryService;;

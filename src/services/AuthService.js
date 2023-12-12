@@ -40,9 +40,10 @@ class AuthService extends HttpService {
                 console.log('Token expired');
                 this.client.post('refresh');
             } else {
-                console.log('Valid token');
+                alert('Your token is valid');
             }
     }
 }
 
-export default new AuthService();
+const authService = new AuthService();
+export default authService;

@@ -20,15 +20,15 @@ function GalleryRow({ gallery } ) {
 						{gallery && (
 					<div>
 						<Link
-							to={`/galleries/${gallery.id}`}
+							to={`/galleries/${gallery?.id}`}
 						>
-						{gallery.name}
+						{gallery?.name}
 						</Link>
 					<br />
 					{gallery.user && (
-						<div>
-								Author: {gallery.user.first_name} {gallery.user.last_name}
-						</div>
+						<Link to={`/authors/${gallery?.user.id}`}>
+								Author: {gallery?.user?.first_name} {gallery?.user?.last_name}
+						</Link>
 					)
 					}
 					<h6>Created: {formattedDate}</h6>

@@ -24,9 +24,9 @@ const galleriesSlice = createSlice({
         description: '',
         images: [],
       },
-      createGalleryErrors: [],
       createCommentErrors: [],
-
+      user_id: null,
+      term: null,
     },
 
     reducers: {
@@ -36,6 +36,14 @@ const galleriesSlice = createSlice({
 
         setGallery(state, action) {
             state.gallery = action.payload;
+        },
+
+        setSearchTerm(state, action){
+            state.term = action.payload;
+        },
+        
+        setSearchUserId(state, action){
+            state.user_id = action.payload;
         },
         
         setPaginated(state, action) {
@@ -51,8 +59,8 @@ const galleriesSlice = createSlice({
             state.page.data = [...state.page.data, action.payload];
         },
 
-        setCreateGalleryErrors(state, {payload}) {
-            state.createGalleryErrors = payload;
+        setResetForm(state) {
+            state.newGallery = {};
         },
 
         addCommentToGallery: (state, action) => {
@@ -79,12 +87,14 @@ export const {
     setPaginated,
     getGalleries,
     getGallery,
+    setSearchTerm,
+    setSearchUserId,
     createGallery,
     updateGallery,
     deleteGallery,
     setCreateGallery,
     setGalleriesWithNewGallery,
-    setCreateGalleryErrors,
+    setResetForm,
     addComment,
     deleteComment,
     addCommentToGallery,

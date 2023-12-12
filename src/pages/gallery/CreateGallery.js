@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { selectCreateGalleryErrors } from '../../store/gallery/selector';
-import { createGallery, setCreateGalleryErrors } from '../../store/gallery/slice';
-import CreateGalleryErrors from '../../components/errors/CreateGalleryErrors';
+import { createGallery, updateGallery, setResetForm } from '../../store/gallery/slice';
+import { useParams } from 'react-router-dom';
+import { selectGallery } from '../../store/gallery/selector';
 
 function CreateGallery() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const errors = useSelector(selectCreateGalleryErrors);
+  const { id } = useParams();
+  const gallery = useSelector(selectGallery);
 
   const [newGallery, setNewGallery] = useState({
     name: '',
@@ -23,11 +24,26 @@ function CreateGallery() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    if(id){
+      dispatch(
+        updateGallery({
+          newGallery: {
+            id: id,
+            name: newGallery.name,
+            description: newGallery.description,
+            images: newImages,
+          },
+        })
+      );
+      dispatch(setResetForm());
+      history.push(`/galleries/${gallery.id}`);
+    }else{
     dispatch(createGallery({...newGallery, images: newImages}));
-    dispatch(setCreateGalleryErrors());
-    history.push('/galleries');
-    
+    dispatch(setResetForm());
+    history.push('/my-galleries');
   }
+  dispatch(setResetForm());
+  };
 
   const handleInputChange = (e, index) => {
     const list = [...newImages];
@@ -46,10 +62,19 @@ function CreateGallery() {
   const handleAddButton = () => {
     setNewImages([...newImages, {imageUrl: ''}]);
   }
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    if (id) {
+      history.push(`/galleries/${gallery.id}`);
+    } else {
+      history.push("/my-galleries");
+    }
+  };
   
   return (
     <div>
-      <h2>Create New Gallery</h2>
+      <h2>{id ? "Update Gallery" : "Create New Gallery"}</h2>
       <form onSubmit={handleSubmit}>
         <input
           required
@@ -94,9 +119,13 @@ function CreateGallery() {
             );
           })
         }
-        <button type="submit">Add Gallery</button>
+        <span className="mb-2">
+          <button type="submit">{id ? "Update" : "Create Gallery"}</button>
+        </span>
+        <div>
+          <button onClick={handleCancel}>Cancel</button>
+        </div>
       </form>
-      {errors && <CreateGalleryErrors error={errors} />}
     </div>
   )
 }

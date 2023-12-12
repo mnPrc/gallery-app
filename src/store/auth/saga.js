@@ -1,5 +1,5 @@
 import { call, put, takeLatest} from "redux-saga/effects";
-import AuthService from "../../services/AuthService";
+import authService from "../../services/AuthService";
 import {
     login, 
     setToken,
@@ -14,7 +14,7 @@ import {
 
 function* handleLogin(action) {
     try {
-        const data = yield call(AuthService.login, action.payload.credentials);
+        const data = yield call(authService.login, action.payload.credentials);
         yield put(setToken(data.token));
         
         if (action.payload.meta && action.payload.meta.onSuccess) {
@@ -27,7 +27,7 @@ function* handleLogin(action) {
 
 function* handleRegister(action) {
     try {
-        const data = yield call(AuthService.register, action.payload.registerUser);
+        const data = yield call(authService.register, action.payload.registerUser);
         yield put(setToken(data.token));
         
         if (action.payload.meta && action.payload.meta.onSuccess){
@@ -44,7 +44,7 @@ function* handleRegister(action) {
 
 function* handleLogout({ payload }){
     try {
-        yield call(AuthService.logout);
+        yield call(authService.logout);
         yield put(setToken(null));
         yield put(removeUser());
 
@@ -58,7 +58,7 @@ function* handleLogout({ payload }){
 
 function* getActiveUserHandler(){
     try {
-        const data = yield call(AuthService.getMyProfile);
+        const data = yield call(authService.getMyProfile);
         yield put(setActiveUser(data));
     }  catch (error) {
         console.log(error);

@@ -1,5 +1,5 @@
 import {put, call, takeLatest} from 'redux-saga/effects';
-import GalleryService from '../../services/GalleryService';
+import galleryService from '../../services/GalleryService';
 
 import {
     setGalleries,
@@ -11,7 +11,6 @@ import {
     updateGallery,
     deleteGallery,
     setGalleriesWithNewGallery,
-    setCreateGalleryErrors,
     addCommentToGallery,
     deleteCommentFromGallery,
     addComment,
@@ -21,7 +20,11 @@ import {
 
 function* getGalleriesHandler(action) {
     try {
-        const galleries = yield call(GalleryService.getAll, action.payload.page);
+        const galleries = yield call(galleryService.getAll,
+            action.payload?.page, 
+            action.payload?.user_id,
+            action.payload?.term,
+            );
 
         if(action.payload?.page > 1){
             yield put(setPaginated(galleries));
@@ -35,7 +38,7 @@ function* getGalleriesHandler(action) {
 
 function* getGalleryHandler(action) {
     try {
-        const gallery = yield call(GalleryService.get, action.payload);
+        const gallery = yield call(galleryService.get, action.payload);
         
         yield put(setGallery(gallery));
     } catch (error){
@@ -45,15 +48,11 @@ function* getGalleryHandler(action) {
 
 function* createGalleryHandler(action) {
     try {
-        const newGallery = yield call(GalleryService.create, action.payload);
+        const newGallery = yield call(galleryService.create, action.payload);
         
         yield put(setGalleriesWithNewGallery(newGallery));
     } catch(error) {
-        const errors = [];
-		Object.values(error.response.data.errors).map((error) =>
-			errors.push(error)
-		);
-		yield put(setCreateGalleryErrors(errors));
+        alert('Title should be at least 2 and at most 255 characters long and images must be in jpg, jpeg or png format')
     }
 }
 
@@ -61,21 +60,21 @@ function* createGalleryHandler(action) {
 function* updateGalleryHandler(action) {
     try{
         const gallery = yield call(
-            GalleryService.update,
+            galleryService.update,
             action.payload.newGallery.id,
             action.payload.newGallery
         );
 
         yield put(setGalleriesWithNewGallery(gallery));
     } catch(error) {
-        console.log(error);
+        alert('Title should be at least 2 and at most 255 characters long and images must be in jpg, jpeg or png format1');
     }
 }
 
 function* deleteGalleryHandler(action) {
     try {
-        yield call(GalleryService.delete, action.payload);
-        const gallery = yield call(GalleryService.getAll);
+        yield call(galleryService.delete, action.payload);
+        const gallery = yield call(galleryService.getAll);
         
         yield put(setGalleries(gallery));
     } catch(error){
@@ -85,7 +84,7 @@ function* deleteGalleryHandler(action) {
 
 function* addCommmentHandler(action) {
     try {
-        const newComment = yield call(GalleryService.addComment, action.payload);
+        const newComment = yield call(galleryService.addComment, action.payload);
 
         yield put(addCommentToGallery(newComment));
     } catch(error){
@@ -95,7 +94,7 @@ function* addCommmentHandler(action) {
 
 function* deleteCommentHandler(action) {
     try{
-        const comment = yield call(GalleryService.deleteComment, action.payload);
+        const comment = yield call(galleryService.deleteComment, action.payload);
 
         yield put(deleteCommentFromGallery(comment));
     } catch(error) {
