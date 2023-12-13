@@ -8,7 +8,7 @@ import GalleryRow from '../components/gallery/GalleryRow';
 import GallerySearch from '../components/gallery/GallerySearch';
 
 
-function GalleriesApp({my_id}) {
+function GalleriesApp({my_id = null}) {
   const dispatch = useDispatch();
   const galleries = useSelector(selectGalleries);
   const term = useSelector(selectSearchTerm);
@@ -16,15 +16,15 @@ function GalleriesApp({my_id}) {
   const { id } = useParams(); 
 
   useEffect(() => {
-      dispatch(getActiveUser(id))
-    },[id, dispatch]);
-   
+    dispatch(getActiveUser(id))
+  },[id])
+ 
    useEffect(() => {
       if(my_id){
-          dispatch(setSearchUserId(my_id));
+          dispatch(setSearchUserId(id));
           dispatch(getGalleries({ page: 1, user_id: my_id, term: null}));
       } 
-      if(id){
+      else if(id){
           dispatch(setSearchUserId(id));
           dispatch(getGalleries({ page: 1, user_id: id, term: null}));
       }
@@ -38,7 +38,7 @@ function GalleriesApp({my_id}) {
       if(my_id){
           dispatch(getGalleries({ page: page, user_id: my_id, term: term}));
       } 
-      if(id){
+      else if(id){
           dispatch(getGalleries({ page: page, user_id: id, term: term}));
       }else{
           dispatch(getGalleries({ page: page, user_id: null, term: term}));

@@ -12,6 +12,7 @@ import GalleriesApp from "./GalleriesApp";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated, userSelector } from "../store/auth/selectors";
 import { getActiveUser } from "../store/auth/slice";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Layout() {
     const activeUser = useSelector(userSelector);

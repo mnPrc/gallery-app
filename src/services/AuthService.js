@@ -31,17 +31,11 @@ class AuthService extends HttpService {
     }
 
     handleToken = async () => {
-        let token = localStorage.getItem('token');
-        let decodedToken = atob(token.split('.')[1]);
-
-        let currentDate = new Date();
-
-        if (decodedToken.exp * 1000 < currentDate.getTime()){
-                console.log('Token expired');
-                this.client.post('refresh');
-            } else {
-                alert('Your token is valid');
-            }
+        const { data } = await this.client.post('/refresh');
+        const { token } = data;
+        
+        localStorage.setItem('token', token);
+        alert('Your token has been refreshed');
     }
 }
 

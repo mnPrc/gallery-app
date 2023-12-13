@@ -7,12 +7,13 @@ import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import authService from '../services/AuthService';
 
+
 function Navbar() {
     const isUserAuthenticated = useSelector(isAuthenticated);
     const activeUser = useSelector(userSelector);
     const dispatch = useDispatch();
     const history = useHistory();
-    const { id } = useParams;
+    const { id } = useParams();
 
     useEffect(() =>{
         dispatch(getActiveUser(id))
@@ -73,7 +74,11 @@ function Navbar() {
 						Login
 					</Link>
 				)}
-
+                
+                {isUserAuthenticated && (
+                    <button className='token-span btn' onClick={authService.handleToken}>Refresh Token</button>
+                )}
+                
                 {isUserAuthenticated && (
 					<span 
                     className="logout-span btn" 
@@ -90,9 +95,6 @@ function Navbar() {
                     <h4 className="navbar-item">
                         Guest
                     </h4>
-                )}
-                {isUserAuthenticated && (
-                    <button onClick={authService.handleToken}>Token</button>
                 )}
             </nav>
     </div>

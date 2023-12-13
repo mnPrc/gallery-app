@@ -72,6 +72,11 @@ function* updateGalleryHandler(action) {
 }
 
 function* deleteGalleryHandler(action) {
+    const response = prompt('Are you sure you want to delete gallery, if so type in yes');
+        if(response !== 'yes'){
+          return
+        }
+    
     try {
         yield call(galleryService.delete, action.payload);
         const gallery = yield call(galleryService.getAll);
@@ -93,6 +98,11 @@ function* addCommmentHandler(action) {
 }
 
 function* deleteCommentHandler(action) {
+    const response = prompt('Are you sure you want to delete this comment, if so type in yes');
+        if(response !== 'yes'){
+          return
+        }
+
     try{
         const comment = yield call(galleryService.deleteComment, action.payload);
 

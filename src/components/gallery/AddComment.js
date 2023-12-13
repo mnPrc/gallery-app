@@ -22,7 +22,7 @@ function AddComment({ gallery_id }) {
         <div>
             <form onSubmit={handleSubmit} className='form-group'>
                 <label htmlFor='body' className='col-form-label col-25'>
-                    Comment:
+                    <h5>Comment:</h5>
                 </label>
                 
                 <input

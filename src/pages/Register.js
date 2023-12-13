@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { register, setRegisterErrors } from '../store/auth/slice';
 import RegisterErrors from '../components/errors/RegisterErrors';
 import { selectRegisterErrors } from '../store/auth/selectors';
+import Button from 'react-bootstrap/Button';
+
 
 function Register() {
     const [newUser, setNewUser] = useState({

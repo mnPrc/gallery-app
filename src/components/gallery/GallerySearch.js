@@ -2,6 +2,8 @@ import React from 'react'
 import { selectSearchTerm, selectSearchUserId } from '../../store/gallery/selector'
 import { useDispatch, useSelector } from 'react-redux';
 import { getGalleries, setSearchTerm } from '../../store/gallery/slice';
+import Button from 'react-bootstrap/Button';
+
 
 function GallerySearch() {
     const term = useSelector(selectSearchTerm);
@@ -17,9 +19,9 @@ function GallerySearch() {
     }
   return (
     <div>
-         <input type="text" onChange={changeSearchTerm} placeholder="Input search term here" />
+         <input className='input-field' type="text" onChange={changeSearchTerm} placeholder="Input search term here" />
          <br/>
-         <button onClick={handleSearch}>Search</button>
+         <Button onClick={handleSearch}>Search</Button>
     </div>
   )
 }

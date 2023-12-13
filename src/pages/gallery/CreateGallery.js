@@ -75,7 +75,7 @@ function CreateGallery() {
   return (
     <div>
       <h2>{id ? "Update Gallery" : "Create New Gallery"}</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='create-gallery-form' onSubmit={handleSubmit}>
         <input
           required
           type='text'
