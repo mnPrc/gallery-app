@@ -71,6 +71,35 @@ function CreateGallery() {
       history.push("/my-galleries");
     }
   };
+
+  const reorderImgUrlList = (event, originalImgUrlList) =>{
+    const movedImgUrl = originalImgUrlList.find(
+      (item, index) => index === event.oldIndex
+    );
+
+    const remainingImgUrls = originalImgUrlList.filter(
+      (item, index) => index !== event.oldIndex
+    );
+
+    const reorderedItems = [
+      ...remainingImgUrls.slice(0, event.newIndex),
+      movedImgUrl,
+      ...remainingImgUrls.slice(event.newIndex),
+    ];
+
+    return reorderedItems;
+  };
+
+  function changeOrder(index, position){
+    setNewImages(
+      reorderImgUrlList(
+        { oldIndex: index, newIndex: index + (position === "UP" ? -1 : 1)},
+        newImages
+      )
+    )
+  }
+
+
   
   return (
     <div>
@@ -89,6 +118,7 @@ function CreateGallery() {
           value={newGallery.description}
           onChange={({ target })=> setNewGallery({...newGallery, description: target.value})}
         />
+
         {newImages && 
           newImages.map((x,i) => {
             return (
@@ -101,7 +131,24 @@ function CreateGallery() {
                   onChange={(e) => handleInputChange(e,i)}
                   key={i}
                 />
+                {newImages.length > 1 && (
+							      <div>
+								      <button
+								  	    type="button"
+									      onClick={() => changeOrder(i, "UP")}
+								      >
+									      Move Up
+								      </button>
+								      <button
+									        type="button"
+									        onClick={() => changeOrder(i, "DOWN")}
+								      > 
+									    Move Down
+							      	</button>
+							      </div>
+						)}
                 <span>
+
                   {newImages?.length !== 1 && (
                     <button onClick={() => handleRemoveButton(i)}>
                       Remove
@@ -119,6 +166,7 @@ function CreateGallery() {
             );
           })
         }
+
         <span className="mb-2">
           <button type="submit">{id ? "Update" : "Create Gallery"}</button>
         </span>

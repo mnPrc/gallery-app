@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router,Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom'
 import { selectGallery } from '../../store/gallery/selector'; 
@@ -42,7 +43,11 @@ function SingleGallery() {
   return (
     <div>
       <h1>{gallery.name}</h1>
-      <h3>Author: {gallery?.user?.first_name} {gallery?.user?.last_name}</h3>
+      {gallery.user && (
+						<Link to={`/authors/${gallery?.user.id}`}>
+								Author: {gallery?.user?.first_name} {gallery?.user?.last_name}
+						</Link>
+				)}
       <p>Description: <br/> {gallery.description}</p>
       <p>Created at: {formattedDate}</p>
 

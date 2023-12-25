@@ -42,6 +42,10 @@ function Layout() {
 						<GalleriesApp />
 					</Route>
 
+                    <Redirect from='/authors/my-galleries' to="/my-galleries"/>
+                    <Redirect from='/update-gallery/my-galleries' to="/my-galleries"/>
+                    <Redirect from='/galleries/my-galleries' to="/my-galleries"/>  
+
                     <PrivateRoute path="/my-galleries">
                         <GalleriesApp my_id={isUserAuthenticated ? activeUser.id : null}/>
                     </PrivateRoute>
@@ -64,7 +68,7 @@ function Layout() {
 
                     <Route exact path="/">
                         <Redirect to="/galleries"/>
-                    </Route>  
+                    </Route>
                 </Switch>
             </Router>
         </div>
