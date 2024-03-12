@@ -15,7 +15,13 @@ import {
     deleteCommentFromGallery,
     addComment,
     deleteComment,
-    setCreateCommentError
+    setCreateCommentError,
+    getWishlist,
+    setWishlist,
+    createWishlist,
+    deleteGalleryFromWishlist,
+    setWishlistWithNewGallery,
+    setWishlistWithoutGallery,
 } from "./slice";
 
 function* getGalleriesHandler(action) {
@@ -74,7 +80,7 @@ function* updateGalleryHandler(action) {
 function* deleteGalleryHandler(action) {
     const response = prompt('Are you sure you want to delete gallery, if so type in yes');
         if(response !== 'yes'){
-          return
+            return
         }
     
     try {
@@ -100,7 +106,7 @@ function* addCommmentHandler(action) {
 function* deleteCommentHandler(action) {
     const response = prompt('Are you sure you want to delete this comment, if so type in yes');
         if(response !== 'yes'){
-          return
+            return
         }
 
     try{
@@ -112,6 +118,33 @@ function* deleteCommentHandler(action) {
     }
 }
 
+function* getWishlistHandler(action) {
+    try{
+        const wishlist = yield call(galleryService.getWishlist, action.payload);
+        yield put(setWishlist(wishlist));
+    } catch(e){
+        console.log(error);
+    }
+}
+
+function* createWishlistHandler(action) {
+    try{
+        const wishlist = yield call(galleryService.createWishlist, action.payload);
+        yield put(setWishlistWithNewGallery(wishlist));
+    } catch(e){
+        console.log(e);
+    }
+}
+
+function* deleteGalleryFromWishlistHandler(action) {
+    try{
+        const wishlist = yield call(galleryService.deleteGalleryFromWishlist, action.payload);
+        yield put(setWishlistWithoutGallery(wishlist))
+    } catch(e){
+        console.log(e);
+    }
+}
+
 export function* watchForGalleriesSagas() {
     yield takeLatest(getGalleries.type, getGalleriesHandler);
     yield takeLatest(getGallery.type, getGalleryHandler);
@@ -120,4 +153,7 @@ export function* watchForGalleriesSagas() {
     yield takeLatest(deleteGallery.type, deleteGalleryHandler);
     yield takeLatest(addComment.type, addCommmentHandler);
     yield takeLatest(deleteComment.type, deleteCommentHandler);
+    yield takeLatest(getWishlist.type, getWishlistHandler);
+    yield takeLatest(createWishlist.type, createWishlistHandler);
+    yield takeLatest(deleteGalleryFromWishlist.type, deleteGalleryFromWishlistHandler);
 }

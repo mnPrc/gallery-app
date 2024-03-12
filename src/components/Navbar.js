@@ -58,6 +58,13 @@ function Navbar() {
                     </Link>
                 )}
 
+                {isUserAuthenticated &&(
+                    <Link 
+                    className="navbar-item"
+                    to="/wishlist">
+                        Wishlist
+                    </Link>
+                )}
 
                 {!isUserAuthenticated && (
 					<Link 

@@ -9,6 +9,7 @@ import PrivateRoute from "../components/routing/PrivateRoute";
 import CreateGallery from "./gallery/CreateGallery";
 import SingleGallery from "./gallery/SingleGallery";
 import GalleriesApp from "./GalleriesApp";
+import Wishlist from "./gallery/Wishlist";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated, userSelector } from "../store/auth/selectors";
 import { getActiveUser } from "../store/auth/slice";
@@ -64,6 +65,10 @@ function Layout() {
 
                     <PrivateRoute path="/galleries/:id">
                         <SingleGallery/>
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/wishlist">
+                        <Wishlist/>
                     </PrivateRoute>
 
                     <Route exact path="/">

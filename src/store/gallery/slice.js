@@ -8,6 +8,9 @@ const middlewareActions = {
     deleteGallery: () => {},
     addComment: () => {},
     deleteComment: () => {},
+    getWishlist: () => {},
+    createWishlist: () => {},
+    deleteGalleryFromWishlist: () => {},
 };
 
 const galleriesSlice = createSlice({
@@ -22,11 +25,13 @@ const galleriesSlice = createSlice({
       newGallery: {
         name: '',
         description: '',
+        first_image_url:'',
         images: [],
       },
       createCommentErrors: [],
       user_id: null,
       term: null,
+      wishlist: [],
     },
 
     reducers: {
@@ -77,6 +82,18 @@ const galleriesSlice = createSlice({
             state.createCommentErrors = payload;
         },
 
+        setWishlist(state, action) {
+            state.wishlist = action.payload
+        },  
+    
+        setWishlistWithNewGallery(state, action) {
+            state.wishlist = [...state.wishlist, action.payload]
+        },
+    
+        setWishlistWithoutGallery(state, action) {
+            state.wishlist = state.wishlist.filter(gallery => gallery.id !== action.payload)
+        },
+
         ...middlewareActions,
     },
 });
@@ -99,8 +116,13 @@ export const {
     deleteComment,
     addCommentToGallery,
     deleteCommentFromGallery,
-    setCreateCommentError
-
+    setCreateCommentError,
+    getWishlist,
+    setWishlist,
+    createWishlist,
+    deleteGalleryFromWishlist,
+    setWishlistWithNewGallery,
+    setWishlistWithoutGallery,
 } = galleriesSlice.actions;
 
 export default galleriesSlice.reducer;

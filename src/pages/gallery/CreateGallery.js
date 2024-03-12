@@ -24,6 +24,8 @@ function CreateGallery() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
+    const firstImageUrl = newImages.length > 0 ? newImages[0].imageUrl : '';
+
     if(id){
       dispatch(
         updateGallery({
@@ -31,6 +33,7 @@ function CreateGallery() {
             id: id,
             name: newGallery.name,
             description: newGallery.description,
+            first_image_url: firstImageUrl,
             images: newImages,
           },
         })
@@ -38,7 +41,11 @@ function CreateGallery() {
       dispatch(setResetForm());
       history.push(`/galleries/${gallery.id}`);
     }else{
-    dispatch(createGallery({...newGallery, images: newImages}));
+    dispatch(createGallery({
+      ...newGallery, 
+      first_image_url: firstImageUrl,
+      images: newImages,
+    }));
     dispatch(setResetForm());
     history.push('/my-galleries');
   }

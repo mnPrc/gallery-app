@@ -7,3 +7,5 @@ export const selectCreateCommentErrors = (state) => state.gallery.createCommentE
 export const selectSearchTerm = (state) => state.gallery.term;
 
 export const selectSearchUserId = (state) => state.gallery.user_id;
+
+export const selectWishlist = (state) => state.gallery.wishlist;

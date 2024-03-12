@@ -47,9 +47,27 @@ class GalleryService extends HttpService{
     }
 
     deleteComment = async (content) => {
-        const { data } = await this.client.delete(`/comments/${content.comment}`);
+        await this.client.delete(`/comments/${content.comment}`);
 
         return content.comment;
+    }
+
+    getWishlist = async () => {
+        const { data } = await this.client.get('/wishlist');
+        
+        return data;
+    }
+
+    createWishlist = async (gallery_id) => {
+        const { data } = await this.client.post(`/galleries/${gallery_id}/wishlist`);
+
+        return data;
+    }
+
+    deleteGalleryFromWishlist = async (gallery_id) => {
+        const { data } = await this.client.delete(`/wishlist/${gallery_id}`);
+
+        return data;
     }
 }
 

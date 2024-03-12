@@ -5,7 +5,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { selectGallery } from '../../store/gallery/selector'; 
 import { isAuthenticated, userSelector } from '../../store/auth/selectors';
 import useFormattedDate from '../../hooks/useFormattedDate';
-import { deleteGallery, getGallery, } from '../../store/gallery/slice';
+import { createWishlist, deleteGallery, getGallery, } from '../../store/gallery/slice';
 import DisplayImages from '../../components/gallery/DisplayImages';
 import DisplayComments from '../../components/gallery/DisplayComments';
 import { getActiveUser } from '../../store/auth/slice';
@@ -40,6 +40,12 @@ function SingleGallery() {
       history.push(`/update-gallery/${id}`);
     };
 
+    function handleCreateWishlist(e) {
+      e.preventDefault();
+      dispatch(createWishlist(id));
+      history.push('/wishlist');
+  }
+
   return (
     <div>
       <h1>{gallery.name}</h1>
@@ -50,7 +56,12 @@ function SingleGallery() {
 				)}
       <p>Description: <br/> {gallery.description}</p>
       <p>Created at: {formattedDate}</p>
-
+      <div className="d-lg-flex justify-content-center mt-4 mb-4">
+        {gallery.wishlists?.some(({ gallery_id }) => gallery_id === gallery.id) ?
+          <p className="text-danger">This gallery is in your wishlist</p> :
+            <button onClick={handleCreateWishlist}>Add to Wishlist</button>
+        }
+      </div>
       {isUserAuthenticated && activeUser.id === gallery.user_id && (
           <>
           <button onClick={() => handleDeleteGallery(id)}>Delete Gallery</button>
