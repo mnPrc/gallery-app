@@ -13,7 +13,9 @@ function CreateGallery() {
 
   const [newGallery, setNewGallery] = useState({
     name: '',
-    description: ''
+    description: '',
+    first_image_url:'',
+    price: '',
   });
   
   const [newImages, setNewImages] = useState([
@@ -25,7 +27,6 @@ function CreateGallery() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     const firstImageUrl = newImages.length > 0 ? newImages[0].imageUrl : '';
-
     if(id){
       dispatch(
         updateGallery({
@@ -34,6 +35,7 @@ function CreateGallery() {
             name: newGallery.name,
             description: newGallery.description,
             first_image_url: firstImageUrl,
+            price: newGallery.price,
             images: newImages,
           },
         })
@@ -44,6 +46,7 @@ function CreateGallery() {
     dispatch(createGallery({
       ...newGallery, 
       first_image_url: firstImageUrl,
+      price: newGallery.price,
       images: newImages,
     }));
     dispatch(setResetForm());
@@ -124,6 +127,16 @@ function CreateGallery() {
           placeholder='Description'
           value={newGallery.description}
           onChange={({ target })=> setNewGallery({...newGallery, description: target.value})}
+        />
+        <br/>
+        <input
+          required
+          type='number'
+          min='1'
+          max='10000'
+          placeholder='Gallery Price'
+          value={newGallery.price}
+          onChange={({ target })=> setNewGallery({...newGallery, price: parseFloat(target.value)})}          
         />
 
         {newImages && 

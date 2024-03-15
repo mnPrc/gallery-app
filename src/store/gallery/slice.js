@@ -11,6 +11,7 @@ const middlewareActions = {
     getWishlist: () => {},
     createWishlist: () => {},
     deleteGalleryFromWishlist: () => {},
+    buyGallery: () => {},
 };
 
 const galleriesSlice = createSlice({
@@ -26,12 +27,14 @@ const galleriesSlice = createSlice({
         name: '',
         description: '',
         first_image_url:'',
+        price: '',
         images: [],
       },
       createCommentErrors: [],
       user_id: null,
       term: null,
       wishlist: [],
+      buyer_id: null,
     },
 
     reducers: {
@@ -92,8 +95,20 @@ const galleriesSlice = createSlice({
     
         setWishlistWithoutGallery(state, action) {
             state.wishlist = state.wishlist.filter(gallery => gallery.id !== action.payload)
+        },   
+        
+        setBuyerId(state, action){
+            state.buyer_id = action.payload
         },
 
+        setBoughtGalleryToBuyer(state, action) {
+            const { galleryId, buyerId } = action.payload;
+            
+            const boughtGallery = state.page.data.find(gallery => gallery.id === galleryId);
+            if (boughtGallery) {
+                boughtGallery.buyer_id = buyerId;
+            }
+        },
         ...middlewareActions,
     },
 });
@@ -123,6 +138,9 @@ export const {
     deleteGalleryFromWishlist,
     setWishlistWithNewGallery,
     setWishlistWithoutGallery,
+    setBuyerId,
+    setBoughtGalleryToBuyer,
+    buyGallery,
 } = galleriesSlice.actions;
 
 export default galleriesSlice.reducer;

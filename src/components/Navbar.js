@@ -83,6 +83,15 @@ function Navbar() {
 				)}
                 
                 {isUserAuthenticated && (
+                    <Link
+                    className="navbar-item"
+                    to="transactions"
+                    >
+                        Transactions
+                    </Link>
+                )}
+                
+                {isUserAuthenticated && (
                     <button className='token-span btn' onClick={authService.handleToken}>Refresh Token</button>
                 )}
                 
@@ -95,13 +104,16 @@ function Navbar() {
 				)}
                 
                 {isUserAuthenticated ? (
-                    <h4 className="navbar-item">
-                        User: {activeUser && activeUser.first_name} {activeUser && activeUser.last_name}
-                    </h4>
+                        <h4 className="navbar-item">
+                            User: {activeUser.first_name} {activeUser.last_name} 
+                        </h4> 
                 ):(
                     <h4 className="navbar-item">
                         Guest
                     </h4>
+                )}
+                {isUserAuthenticated && (
+                    <h4 className="navbar-item">Balance: {activeUser.money}</h4>
                 )}
             </nav>
     </div>

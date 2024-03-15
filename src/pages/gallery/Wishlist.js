@@ -10,24 +10,19 @@ function Wishlist(){
     const wishlists = useSelector(selectWishlist);
     const history = useHistory();
 
-    useEffect(() => { 
-        console.log("Fetching wishlist...");
+    useEffect(() => {
         dispatch(getWishlist());
     },[]);
-
-    useEffect(() => {
-        console.log("Wishlist:", wishlists);
-    }, [wishlists]);
 
     const handleRemoveGalleryFromWishlist = (id) => {
         dispatch(deleteGalleryFromWishlist(id));
         history.push('/');
+        dispatch(getWishlist());
     };
     
     return(
         <div>
             {wishlists.length ? <h1>Wishlist</h1> : <h1>Wishlist is empty</h1>}
-            <ul>
                 {wishlists && wishlists?.map((wishlist) =>{
                     return (<ul key={wishlist.id}>
                         <div className="justify-content-sm-evenly gallery-row-margin">
@@ -35,8 +30,16 @@ function Wishlist(){
                                 <h3>{wishlist.gallery.name}</h3>
                             </Link>
                             <p>{wishlist.gallery.description}</p>
+                            <p>Gallery Price: {wishlist.gallery.price}</p>
                             <img src={wishlist.gallery.first_image_url} width="300px" height="300px"></img>
                         </div>
+                        {wishlist.gallery.buyer_id !== null ? (
+                            <div className="justify-content-sm-evenly gallery-row-margin">
+                                <p className="text-danger">You own this gallery, you can remove it from the Wishlist</p>
+                            </div>
+                        ):(
+                            <></>
+                        )}
                         <div className="d-lg-flex justify-content-center mt-4 mb-4">
                             <button onClick={() => handleRemoveGalleryFromWishlist(wishlist.id)}>
                                 Remove gallery from your wishlist
@@ -44,7 +47,6 @@ function Wishlist(){
                         </div>
                     </ul>)
                 })}
-            </ul>
         </div>
     )
 }

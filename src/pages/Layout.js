@@ -10,6 +10,7 @@ import CreateGallery from "./gallery/CreateGallery";
 import SingleGallery from "./gallery/SingleGallery";
 import GalleriesApp from "./GalleriesApp";
 import Wishlist from "./gallery/Wishlist";
+import Transactions from "./Transactions";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated, userSelector } from "../store/auth/selectors";
 import { getActiveUser } from "../store/auth/slice";
@@ -46,6 +47,7 @@ function Layout() {
                     <Redirect from='/authors/my-galleries' to="/my-galleries"/>
                     <Redirect from='/update-gallery/my-galleries' to="/my-galleries"/>
                     <Redirect from='/galleries/my-galleries' to="/my-galleries"/>  
+                    <Redirect from='/galleries/transactions' to="/transactions"/>  
 
                     <PrivateRoute path="/my-galleries">
                         <GalleriesApp my_id={isUserAuthenticated ? activeUser.id : null}/>
@@ -69,6 +71,10 @@ function Layout() {
 
                     <PrivateRoute path="/wishlist">
                         <Wishlist/>
+                    </PrivateRoute>
+
+                    <PrivateRoute path="/transactions">
+                        <Transactions/>
                     </PrivateRoute>
 
                     <Route exact path="/">

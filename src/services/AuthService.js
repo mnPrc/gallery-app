@@ -30,6 +30,12 @@ class AuthService extends HttpService {
         return data;
     }
 
+    depositMoney = async (money) => {
+        const { data } = await this.client.post('/deposit', {money});
+
+        return data;
+    }
+
     handleToken = async () => {
         const { data } = await this.client.post('/refresh');
         const { token } = data;

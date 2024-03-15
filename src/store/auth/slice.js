@@ -5,6 +5,7 @@ const MiddlewareActions = {
     register: () => {},
     logout: () => {},
     getActiveUser: () => {},
+    deposit: () => {},
 };
 
 const token = localStorage.getItem("token");
@@ -16,6 +17,7 @@ export const userSlice = createSlice({
         token: token,
         loginErrors: [],
         registerErrors: [],
+        money: 0,
     },
 
     reducers: {
@@ -34,6 +36,9 @@ export const userSlice = createSlice({
         setActiveUser(state, action) {
             state.user = action.payload;
         },
+        setDeposit(state, action){
+            state.money += action.payload;
+        },
         ...MiddlewareActions,
     }
 });
@@ -48,6 +53,8 @@ export const {
     setRegisterErrors,
     getActiveUser,
     setActiveUser,
+    deposit,
+    setDeposit,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -22,6 +22,8 @@ import {
     deleteGalleryFromWishlist,
     setWishlistWithNewGallery,
     setWishlistWithoutGallery,
+    buyGallery,
+    setBoughtGalleryToBuyer,
 } from "./slice";
 
 function* getGalleriesHandler(action) {
@@ -145,6 +147,16 @@ function* deleteGalleryFromWishlistHandler(action) {
     }
 }
 
+function* buyGalleryHandler(action) {
+    try {
+        const { galleryId, buyerId } = action.payload;
+        yield call(galleryService.buy, galleryId);
+        yield put(setBoughtGalleryToBuyer({ galleryId, buyerId }));        
+    } catch(e) {
+        console.log(e);
+    }
+}
+
 export function* watchForGalleriesSagas() {
     yield takeLatest(getGalleries.type, getGalleriesHandler);
     yield takeLatest(getGallery.type, getGalleryHandler);
@@ -156,4 +168,5 @@ export function* watchForGalleriesSagas() {
     yield takeLatest(getWishlist.type, getWishlistHandler);
     yield takeLatest(createWishlist.type, createWishlistHandler);
     yield takeLatest(deleteGalleryFromWishlist.type, deleteGalleryFromWishlistHandler);
+    yield takeLatest(buyGallery.type, buyGalleryHandler);
 }

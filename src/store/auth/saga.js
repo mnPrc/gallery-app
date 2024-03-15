@@ -10,6 +10,8 @@ import {
     setRegisterErrors,
     getActiveUser,
     setActiveUser,
+    deposit,
+    setDeposit,
 } from "./slice";
 
 function* handleLogin(action) {
@@ -65,9 +67,20 @@ function* getActiveUserHandler(){
     }
 }
 
+function* depositMoneyHandler(action){
+    try {
+        const data = yield call(authService.depositMoney, action.payload);
+        yield put(setDeposit(data));
+        yield put(getActiveUser());
+    } catch(error) {
+        console.log(error)
+    }
+}
+
 export function* watchForSagas() {
     yield takeLatest(login.type, handleLogin);
     yield takeLatest(register.type, handleRegister);
     yield takeLatest(logout.type, handleLogout);
     yield takeLatest(getActiveUser.type, getActiveUserHandler);
+    yield takeLatest(deposit.type, depositMoneyHandler);
 }
