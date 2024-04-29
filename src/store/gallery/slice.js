@@ -6,8 +6,11 @@ const middlewareActions = {
     createGallery: () => {},
     updateGallery: () => {},
     deleteGallery: () => {},
+    getComments: () => {},
     addComment: () => {},
     deleteComment: () => {},
+    likeComment: () => {},
+    dislikeComment: () => {},
     getWishlist: () => {},
     createWishlist: () => {},
     deleteGalleryFromWishlist: () => {},
@@ -17,24 +20,24 @@ const middlewareActions = {
 const galleriesSlice = createSlice({
     name: 'galleries',
     initialState: {
-      page: {
-        data: [],
-        current_page: 0,
-        last_page: 0,
-      },
-      gallery: {},
-      newGallery: {
-        name: '',
-        description: '',
-        first_image_url:'',
-        price: '',
-        images: [],
-      },
-      createCommentErrors: [],
-      user_id: null,
-      term: null,
-      wishlist: [],
-      buyer_id: null,
+        page: {
+            data: [],
+            current_page: 0,
+            last_page: 0,
+        },
+        gallery: {},
+        newGallery: {
+            name: '',
+            description: '',
+            first_image_url:'',
+            price: '',
+            images: [],
+        },
+        createCommentErrors: [],
+        user_id: null,
+        term: null,
+        wishlist: [],
+        buyer_id: null,
     },
 
     reducers: {
@@ -70,6 +73,10 @@ const galleriesSlice = createSlice({
         setResetForm(state) {
             state.newGallery = {};
         },
+        
+        setComments(state, action){
+            state.gallery.comments = action.payload;
+        },
 
         addCommentToGallery: (state, action) => {
             state.gallery.comments.push(action.payload);
@@ -79,6 +86,24 @@ const galleriesSlice = createSlice({
             state.gallery.comments = state.gallery.comments.filter(
                 (comment) => comment.id !== action.payload
             );
+        },
+
+        likeCommentInGallery: (state, action) => {
+            if(state.gallery){
+                const comment = state.gallery.comments.find(comment => comment.id === action.payload);
+                if(comment){
+                    comment.likes++;
+                }
+            }
+        },
+
+        dislikeCommentInGallery:(state, action) => {
+            if(state.gallery){
+                const comment = state.gallery.comments.find(comment => comment.id === action.payload);
+                if(comment){
+                    comment.dislikes++;
+                }
+            }
         },
 
         setCreateCommentError(state, {payload}) {
@@ -129,8 +154,14 @@ export const {
     setResetForm,
     addComment,
     deleteComment,
+    getComments,
+    setComments,
     addCommentToGallery,
     deleteCommentFromGallery,
+    likeComment,
+    likeCommentInGallery,
+    dislikeComment,
+    dislikeCommentInGallery,
     setCreateCommentError,
     getWishlist,
     setWishlist,

@@ -40,6 +40,12 @@ class GalleryService extends HttpService{
         return data;
     }
 
+    getGalleryComments = async (gallery_id) => {
+        const { data } = await this.client.get(`/galleries/${gallery_id}/comments`);
+
+        return data;
+    }
+    
     addComment = async (content) => {
         const { data } = await this.client.post(`/galleries/${content.id}/comments`, content.comment);
 
@@ -50,6 +56,18 @@ class GalleryService extends HttpService{
         await this.client.delete(`/comments/${content.comment}`);
 
         return content.comment;
+    }
+
+    likeComment = async (comment_id) => {
+        const { data } = await this.client.post(`/comments/${comment_id}/like`);
+        
+        return data;
+    }
+
+    dislikeComment = async (comment_id) => {
+        const { data } = await this.client.post(`/comments/${comment_id}/dislike`);
+        
+        return data;
     }
 
     getWishlist = async () => {

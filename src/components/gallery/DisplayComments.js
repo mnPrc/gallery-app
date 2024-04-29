@@ -1,12 +1,23 @@
 import React from 'react';
 import { isAuthenticated, userSelector } from '../../store/auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteComment } from '../../store/gallery/slice';
+import { deleteComment, dislikeComment, getComments, likeComment } from '../../store/gallery/slice';
 import AddComment from './AddComment';
 function DisplayComments({ gallery }) {
     const isUserAuthenticated = useSelector(isAuthenticated);
     const activeUser = useSelector(userSelector);
     const dispatch = useDispatch();
+
+    const handleLikeComment = (id) => {
+        dispatch(likeComment(id));
+        dispatch(getComments(gallery.id));
+    }
+
+    const handleDislikeComment = (id) => {
+        dispatch(dislikeComment(id));
+        dispatch(getComments(gallery.id));
+    }
+
 
   return (
     <div>
@@ -36,6 +47,10 @@ function DisplayComments({ gallery }) {
                                 <strong>
                                     <p>{comment.body}</p>
                                 </strong>
+                                <button onClick={() => handleLikeComment(comment.id)}>👍</button>
+                                <strong><p>{comment.likes}</p></strong>
+                                <button onClick={() => handleDislikeComment(comment.id)}>👎</button>
+                                <strong><p>{comment.dislikes}</p></strong>
                                 {isUserAuthenticated && activeUser.id === comment.user_id && (
                                     <button
                                         onClick={() => dispatch(deleteComment({comment: comment.id , gallery: gallery.id,}))}

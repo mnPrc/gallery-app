@@ -15,6 +15,12 @@ import {
     deleteCommentFromGallery,
     addComment,
     deleteComment,
+    getComments,
+    setComments,
+    likeComment,
+    likeCommentInGallery,
+    dislikeComment,
+    dislikeCommentInGallery,
     setCreateCommentError,
     getWishlist,
     setWishlist,
@@ -95,6 +101,15 @@ function* deleteGalleryHandler(action) {
     }
 }
 
+function* getCommentsHandler(action) {
+    try{
+        const comments = yield call(galleryService.getGalleryComments, action.payload);
+        yield put(setComments(comments));
+    } catch(error){
+        console.log(error);
+    }
+}
+
 function* addCommmentHandler(action) {
     try {
         const newComment = yield call(galleryService.addComment, action.payload);
@@ -117,6 +132,26 @@ function* deleteCommentHandler(action) {
         yield put(deleteCommentFromGallery(comment));
     } catch(error) {
         alert(error.message);
+    }
+}
+
+function* likeCommentHandler(action) {
+    try{
+        const like = yield call(galleryService.likeComment, action.payload);
+        
+        yield put(likeCommentInGallery(like));
+    } catch(error){
+        console.log(error.message);
+    }
+}
+
+function* dislikeCommentHandler(action) {
+    try{
+        const dislike = yield call(galleryService.dislikeComment, action.payload);
+
+        yield put(dislikeCommentInGallery(dislike));
+    } catch(error){
+        console.log(error.message);
     }
 }
 
@@ -165,6 +200,9 @@ export function* watchForGalleriesSagas() {
     yield takeLatest(deleteGallery.type, deleteGalleryHandler);
     yield takeLatest(addComment.type, addCommmentHandler);
     yield takeLatest(deleteComment.type, deleteCommentHandler);
+    yield takeLatest(getComments.type, getCommentsHandler);
+    yield takeLatest(likeComment.type, likeCommentHandler);
+    yield takeLatest(dislikeComment.type, dislikeCommentHandler);
     yield takeLatest(getWishlist.type, getWishlistHandler);
     yield takeLatest(createWishlist.type, createWishlistHandler);
     yield takeLatest(deleteGalleryFromWishlist.type, deleteGalleryFromWishlistHandler);
