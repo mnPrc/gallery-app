@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticated, userSelector } from "../store/auth/selectors";
 import { getActiveUser } from "../store/auth/slice";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AdminPage from "./AdminPage";
+import AdminRoute from "../components/routing/PrivateRoute";
 
 function Layout() {
     const activeUser = useSelector(userSelector);
@@ -56,6 +58,10 @@ function Layout() {
                     <Route path="/authors/:id">
                         <GalleriesApp/>
                     </Route>
+                    
+                    <AdminRoute path="/admin">
+                        <AdminPage/>
+                    </AdminRoute>
                     
                     <PrivateRoute path="/create">
                         <CreateGallery/>

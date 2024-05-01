@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { isAuthenticated, userSelector } from '../store/auth/selectors';
+import { isAdmin, isAuthenticated, userSelector } from '../store/auth/selectors';
 import { useSelector, useDispatch } from 'react-redux';
 import { getActiveUser, logout } from '../store/auth/slice';
 import { useHistory } from 'react-router-dom';
@@ -10,6 +10,7 @@ import authService from '../services/AuthService';
 
 function Navbar() {
     const isUserAuthenticated = useSelector(isAuthenticated);
+    const isUserAdmin = useSelector(isAdmin);
     const activeUser = useSelector(userSelector);
     const dispatch = useDispatch();
     const history = useHistory();
@@ -91,10 +92,15 @@ function Navbar() {
                     </Link>
                 )}
                 
-                {isUserAuthenticated && (
-                    <button className='token-span btn' onClick={authService.handleToken}>Refresh Token</button>
+                {isUserAuthenticated && isUserAdmin && (
+                    <Link 
+                        className='admin-span btn'
+                        to="/admin"
+                    >   
+                        Admin Hub
+                    </Link>
                 )}
-                
+
                 {isUserAuthenticated && (
 					<span 
                     className="logout-span btn" 
