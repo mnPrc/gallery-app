@@ -49,13 +49,21 @@ class AuthService extends HttpService {
     }
 
     handleToken = async () => {
-        const { data } = await this.client.post('/refresh');
-        const { token } = data;
-        
-        localStorage.setItem('token', token);
-        alert('Your token has been refreshed');
-    }
+        const tokenExpiry = localStorage.getItem('tokenExpiry');
+        if (!tokenExpiry || new Date(tokenExpiry) <= new Date()) {
+            try {
+                const response = await axios.get('/refresh');
+                const { token } = response.data;
+                localStorage.setItem('token', token);
 
+                const newTokenExpiry = new Date();
+                newTokenExpiry.setMinutes(newTokenExpiry.getMinutes() + 60);
+                localStorage.setItem('tokenExpiry', newTokenExpiry);
+            } catch (error) {
+                console.error('Failed to refresh token:', error);
+            } 
+        }   
+    }
 }
 
 const authService = new AuthService();

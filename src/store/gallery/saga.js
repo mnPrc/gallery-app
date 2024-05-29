@@ -11,6 +11,7 @@ import {
     updateGallery,
     deleteGallery,
     setGalleriesWithNewGallery,
+    setCreateGalleryErrors,
     addCommentToGallery,
     deleteCommentFromGallery,
     addComment,
@@ -63,10 +64,19 @@ function* getGalleryHandler(action) {
 function* createGalleryHandler(action) {
     try {
         const newGallery = yield call(galleryService.create, action.payload);
-        
         yield put(setGalleriesWithNewGallery(newGallery));
+
+        if (action.payload.meta && action.payload.meta.onSuccess){
+            yield call(action.payload.meta.onSuccess);
+        }
     } catch(error) {
-        alert('Title should be at least 2 and at most 255 characters long and images must be in jpg, jpeg or png format')
+        const errors = [];
+        if(error.response && error.response.data && error.response.data.errors){
+            Object.values(error.response.data.errors).forEach((error) => 
+                errors.push(error)
+            );
+        }
+        yield put(setCreateGalleryErrors(errors));
     }
 }
 
@@ -78,10 +88,19 @@ function* updateGalleryHandler(action) {
             action.payload.newGallery.id,
             action.payload.newGallery
         );
-
         yield put(setGalleriesWithNewGallery(gallery));
+
+        if (action.payload.meta && action.payload.meta.onSuccess){
+            yield call(action.payload.meta.onSuccess);
+        }
     } catch(error) {
-        alert('Title should be at least 2 and at most 255 characters long and images must be in jpg, jpeg or png format1');
+        const errors = [];
+        if(error.response && error.response.data && error.response.data.errors){
+            Object.values(error.response.data.errors).forEach((error) => 
+                errors.push(error)
+            );
+        }
+        yield put(setCreateGalleryErrors(errors));
     }
 }
 

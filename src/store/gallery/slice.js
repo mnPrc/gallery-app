@@ -33,6 +33,7 @@ const galleriesSlice = createSlice({
             price: '',
             images: [],
         },
+        createGalleryErrors: [],
         createCommentErrors: [],
         user_id: null,
         term: null,
@@ -68,6 +69,11 @@ const galleriesSlice = createSlice({
 
         setGalleriesWithNewGallery(state, action) {
             state.page.data = [...state.page.data, action.payload];
+        },
+
+        setCreateGalleryErrors(state, action){
+            console.log(action.payload);
+            state.createGalleryErrors = action.payload;
         },
 
         setResetForm(state) {
@@ -151,6 +157,7 @@ export const {
     deleteGallery,
     setCreateGallery,
     setGalleriesWithNewGallery,
+    setCreateGalleryErrors,
     setResetForm,
     addComment,
     deleteComment,

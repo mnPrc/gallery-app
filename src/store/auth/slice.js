@@ -19,6 +19,7 @@ export const userSlice = createSlice({
         token: token,
         loginErrors: [],
         registerErrors: [],
+        transactionErrors:[],
         money: 0,
         isAdmin: false,
         users: [],
@@ -43,6 +44,9 @@ export const userSlice = createSlice({
         setDeposit(state, action){
             state.money += action.payload;
         },
+        setTransactionErrors(state, action){
+            state.transactionErrors = action.payload; 
+        }, 
         setIsAdmin(state, action){
             state.isAdmin = action.payload;
         },
@@ -77,6 +81,7 @@ export const {
     setActiveUser,
     deposit,
     setDeposit,
+    setTransactionErrors,
     setIsAdmin,
     getUsers,
     setUsers,

@@ -9,3 +9,5 @@ export const usersSelector = (state) => (state.auth.users);
 export const selectErrors = (state) => state.auth.loginErrors;
 
 export const selectRegisterErrors = (state) => state.auth.registerErrors;
+
+export const selectTransactionErrors = (state) => state.auth.transactionErrors;

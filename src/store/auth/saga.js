@@ -12,6 +12,7 @@ import {
     setActiveUser,
     deposit,
     setDeposit,
+    setTransactionErrors,
     setIsAdmin,
     getUsers,
     setUsers,
@@ -97,7 +98,7 @@ function* depositMoneyHandler(action){
         yield put(setDeposit(data));
         yield put(getActiveUser());
     } catch(error) {
-        console.log(error)
+        yield put(setTransactionErrors(error.response.data.message));
     }
 }
 

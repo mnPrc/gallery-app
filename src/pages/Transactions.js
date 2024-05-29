@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGalleries } from '../store/gallery/selector';
-import { userSelector } from '../store/auth/selectors';
+import { selectTransactionErrors, userSelector } from '../store/auth/selectors';
 import { getGalleries, setBuyerId } from '../store/gallery/slice';
 import { BrowserRouter as Router,Link } from 'react-router-dom';
 import { deposit } from '../store/auth/slice';
+import TransactionErrors from '../components/errors/TransactionErrors';
 
 function Transactions() {
     const dispatch = useDispatch();
     const galleries = useSelector(selectGalleries);
     const activeUser = useSelector(userSelector);
+    const errors = useSelector(selectTransactionErrors);
     const [money, setMoney] = useState('');
 
     useEffect(() => {
@@ -36,6 +38,7 @@ function Transactions() {
             />
             <br/>
             <button onClick={handleDepositMoney}>Deposit Money</button>
+            {errors && <TransactionErrors error={errors}/>}      
             <br/>
             <h2>Buy History</h2>
             {galleries && galleries.data
