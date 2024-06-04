@@ -1,13 +1,14 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router";
+import { isAdmin } from "../../store/auth/selectors";
 
-export default function PrivateRoute({ children, ...props }) {
-	const token = localStorage.getItem("token");
-	const isAuthenticated = !!token;
+export default function AdminRoute({ children, ...props }) {
+	const isUserAdmin = useSelector(isAdmin);
 
 	return (
 		<Route {...props}>
-			{isAuthenticated ? children : <Redirect to="/login" />}
+			{isUserAdmin == true ? children : <Redirect to="/" />}
 		</Route>
 	);
 }

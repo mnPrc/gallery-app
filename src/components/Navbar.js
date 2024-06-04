@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getActiveUser, logout } from '../store/auth/slice';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import authService from '../services/AuthService';
 
 
 function Navbar() {

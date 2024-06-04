@@ -105,3 +105,18 @@
 	background-color: #9e93b4;
 	height: 60px;
 }
+
+.admin-container{
+	display: flex;
+	justify-content: flex-end;
+}
+
+.table-container{
+	width: 30%;
+	margin-left: 50px;
+}
+
+.unapproved-container{
+	width: 90%;
+	margin-left: 50px;
+}

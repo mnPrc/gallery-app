@@ -22,6 +22,10 @@ import {
     likeCommentInGallery,
     dislikeComment,
     dislikeCommentInGallery,
+    getAllUnapprovedComments,
+    setUnapprovedComments,
+    adminApproveComment,
+    setAdminApproveComments,
     setCreateCommentError,
     getWishlist,
     setWishlist,
@@ -122,7 +126,12 @@ function* deleteGalleryHandler(action) {
 
 function* getCommentsHandler(action) {
     try{
-        const comments = yield call(galleryService.getGalleryComments, action.payload);
+        const comments = yield call(
+            galleryService.getGalleryComments, 
+            action.payload.gallery_id, 
+            action.payload.sort,
+            action.payload.order 
+        );
         yield put(setComments(comments));
     } catch(error){
         console.log(error);
@@ -164,6 +173,16 @@ function* likeCommentHandler(action) {
     }
 }
 
+function* getAllUnapprovedCommentsHandler(action){
+    try{
+        const data = yield call(galleryService.getAllUnapprovedComments, action.payload);
+        
+        yield put(setUnapprovedComments(data));
+    }catch(error){
+        console.log(error)
+    }
+}
+
 function* dislikeCommentHandler(action) {
     try{
         const dislike = yield call(galleryService.dislikeComment, action.payload);
@@ -171,6 +190,16 @@ function* dislikeCommentHandler(action) {
         yield put(dislikeCommentInGallery(dislike));
     } catch(error){
         console.log(error.message);
+    }
+}
+
+function* approveCommentHandler(action) {
+    try{
+        const response = yield call(galleryService.adminApproveComment, action.payload);
+        
+        yield put(setAdminApproveComments(response));
+    }catch(error){
+        console.log(error);
     }
 }
 
@@ -222,6 +251,8 @@ export function* watchForGalleriesSagas() {
     yield takeLatest(getComments.type, getCommentsHandler);
     yield takeLatest(likeComment.type, likeCommentHandler);
     yield takeLatest(dislikeComment.type, dislikeCommentHandler);
+    yield takeLatest(getAllUnapprovedComments.type, getAllUnapprovedCommentsHandler);
+    yield takeLatest(adminApproveComment.type, approveCommentHandler);
     yield takeLatest(getWishlist.type, getWishlistHandler);
     yield takeLatest(createWishlist.type, createWishlistHandler);
     yield takeLatest(deleteGalleryFromWishlist.type, deleteGalleryFromWishlistHandler);

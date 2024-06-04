@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { isAdmin, isAuthenticated, userSelector } from '../../store/auth/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteComment, dislikeComment, getComments, likeComment } from '../../store/gallery/slice';
@@ -9,14 +9,33 @@ function DisplayComments({ gallery }) {
     const isUserAdmin = useSelector(isAdmin);
     const dispatch = useDispatch();
 
+    const [sort, setSort] = useState('created_at');
+    const [order, setOrder] = useState('desc');
+
+    useEffect(() =>{
+        if(gallery?.id){
+            dispatch(getComments({gallery_id: gallery.id, sort, order}));
+        }
+    },[sort, order, dispatch, gallery?.id]);
+
+
+    const handleSortChange = (e) => {
+        setSort(e.target.value);
+    }
+
+    const handleOrderChange = (e) => {
+        setOrder(e.target.value);
+    }
+
+
     const handleLikeComment = (id) => {
         dispatch(likeComment(id));
-        dispatch(getComments(gallery.id));
+        dispatch(getComments({gallery_id: gallery.id, sort, order}));
     }
 
     const handleDislikeComment = (id) => {
         dispatch(dislikeComment(id));
-        dispatch(getComments(gallery.id));
+        dispatch(getComments({gallery_id: gallery.id, sort, order}));
     }
 
 
@@ -25,9 +44,25 @@ function DisplayComments({ gallery }) {
         {gallery && (
             <div>
                 <h3>Comments:</h3>
+                <div>
+                    <label htmlFor="sort">Sort by:</label>
+                    <select id="sort" value={sort} onChange={handleSortChange}>
+                        <option value="created_at">Created At</option>
+                        <option value="likes">Likes</option>
+                        <option value="dislikes">Dislikes</option>
+                    </select>
+                    <br/>
+                    <label htmlFor="order">Order:</label>
+                    <select id="order" value={order} onChange={handleOrderChange}>
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
                 {gallery.comments?.length ? (
                     <div>
-                        {gallery.comments.map((comment) => (
+                        {gallery.comments
+                            .filter(comment => comment.approved)
+                            .map((comment) => (
                             <div key={comment.id} className='login-form'>
                                 {comment?.user && (
                                     <div>

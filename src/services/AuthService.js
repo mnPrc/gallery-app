@@ -37,7 +37,7 @@ class AuthService extends HttpService {
     }
 
     manageAdminPrivileges = async (user_id) => {
-        const { data } = await this.client.post(`/admin/users/${user_id}`)
+        const { data } = await this.client.post(`/admin/users/${user_id}`);
 
         return data;
     }

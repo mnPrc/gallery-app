@@ -77,7 +77,7 @@ function* getActiveUserHandler(){
     try {
         const data = yield call(authService.getMyProfile);
         yield put(setActiveUser(data));
-        yield put(setIsAdmin(data.isAdmin))
+        yield put(setIsAdmin(data.isAdmin));
     }  catch(error) {
         console.log(error);
     }

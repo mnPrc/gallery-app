@@ -11,6 +11,8 @@ const middlewareActions = {
     deleteComment: () => {},
     likeComment: () => {},
     dislikeComment: () => {},
+    getAllUnapprovedComments: () => {},
+    adminApproveComment: () => {},
     getWishlist: () => {},
     createWishlist: () => {},
     deleteGalleryFromWishlist: () => {},
@@ -33,6 +35,7 @@ const galleriesSlice = createSlice({
             price: '',
             images: [],
         },
+        unapproved_comments: [],
         createGalleryErrors: [],
         createCommentErrors: [],
         user_id: null,
@@ -94,6 +97,10 @@ const galleriesSlice = createSlice({
             );
         },
 
+        setUnapprovedComments: (state, action) => {
+            state.unapproved_comments = action.payload;
+        },
+
         likeCommentInGallery: (state, action) => {
             if(state.gallery){
                 const comment = state.gallery.comments.find(comment => comment.id === action.payload);
@@ -110,6 +117,14 @@ const galleriesSlice = createSlice({
                     comment.dislikes++;
                 }
             }
+        },
+
+        setAdminApproveComment:(state, action) => {
+            state.gallery.comments = state.gallery.comments.map(comment => {
+                if(comment.id === action.payload.id){
+                    return {...gallery.commment, approved: action.payload.approved}
+                }
+            });
         },
 
         setCreateCommentError(state, {payload}) {
@@ -169,6 +184,10 @@ export const {
     likeCommentInGallery,
     dislikeComment,
     dislikeCommentInGallery,
+    adminApproveComment,
+    setAdminApproveComments,
+    getAllUnapprovedComments,
+    setUnapprovedComments,
     setCreateCommentError,
     getWishlist,
     setWishlist,
